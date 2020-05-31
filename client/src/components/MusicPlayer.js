@@ -6,6 +6,7 @@ class MusicPlayer extends Component {
     render(){
         var { currentSong, handleInputChange } = this.props;
 
+        // String that hides the song title
         var songTitle = "";
         for(let i=0; i < currentSong.title.length; i++){
             let ch = currentSong.title[i];
@@ -16,6 +17,13 @@ class MusicPlayer extends Component {
             }
         }
 
+        // String that displays the artists names
+        var artistsString = "";
+        for(let artist of currentSong.artists){
+            artistsString = artistsString + artist + ", ";
+        }
+        artistsString = artistsString.substr(0, artistsString.length - 2);
+
         return(
             <div className="musicplayer">
                 <div className="track-div">
@@ -24,13 +32,13 @@ class MusicPlayer extends Component {
                         alt="album-art"
                     />
                     <h4 className="song-title">{songTitle}</h4>
-                    <p>{currentSong.artist}</p>
+                    <p>{artistsString}</p>
                 </div>
 
                 <div className="player-input">
                     <Form>
                         <Form.Field>
-                            <label for="user-answer">The Song is</label>
+                            <label htmlFor="user-answer">The Song is</label>
                             <input 
                                 id="user-answer" 
                                 name="user-answer"

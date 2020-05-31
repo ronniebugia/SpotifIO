@@ -8,6 +8,7 @@ import Spotify from 'spotify-web-api-js';
 var spotifyWebAPI = new Spotify();
 
 class Game extends Component {
+    // Constructor for Entire Game
     constructor(){
         super();
         const params = this.getHashParams();
@@ -17,16 +18,15 @@ class Game extends Component {
                 {name:'Anand', score:0},
                 {name:'Kaeli', score:0},
                 {name:'Edward', score:0},
-
             ],
             songPool: [],
             loggedIn: params.access_token ? true: false,
             currentSong:{
                 title: "Day 'N' Nite",
-                artist: "Kid Cudi",
+                artists: [],
                 photoURL:"https://images.genius.com/cf6062f7a401be02a5aec991a6bb0039.620x615x1.jpg"
             },
-            seconds:0
+            playlists:[]
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -50,39 +50,57 @@ class Game extends Component {
     getNowPlaying(){
         spotifyWebAPI.getMyCurrentPlaybackState().then(
             (res) => {
-                var title = res.item.name;
-                var photoURL = res.item.album.images[0].url;
-                var artist = res.item.artists[0].name;
-                this.setState({
-                    ...this.state,
-                    currentSong:{
-                        title:title,
-                        photoURL:photoURL,
-                        artist: artist
+                if(res.item){
+                    var title = res.item.name;
+                    var photoURL = res.item.album.images[0].url;
+                    var artists = []
+                    for(let artist of res.item.artists){
+                        artists.push(artist.name);
                     }
-                })
+                    this.setState({
+                        ...this.state,
+                        currentSong:{
+                            title:title,
+                            photoURL:photoURL,
+                            artists: artists
+                        }
+                    });
+                }
             }
         )
     }
 
-    
+    // Handles User Input Change
     handleInputChange(e){
         let userInput = e.target.value.toLowerCase();
         let answer = this.state.currentSong.title.toLocaleLowerCase();
         if(userInput === answer){
-            e.target.style.color = "green";
+            e.target.style.border = "1px solid green";
             e.target.value = "";
-            spotifyWebAPI.skipToNext().then(
-                (res) => {
-                    console.log(res);
-                }
-            );
+            spotifyWebAPI.skipToNext();
+        }
+    }
+
+    
+    async componentDidMount(){
+        // Fetch user playlists
+        await spotifyWebAPI.getUserPlaylists().then(
+            (res) => {
+                this.setState({
+                    ...this.state,
+                    playlists: res.items
+                });
+            }
+        );
+        for(let playlist of this.state.playlists){
+            console.log(playlist.name);
         }
     }
     
-
+    // React Render Function
     render(){
         this.getNowPlaying();
+
         return(
             <div className="game">
                 <MusicPlayer 

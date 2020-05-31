@@ -9,7 +9,7 @@ class Scoreboard extends Component {
         var board = [];
         for(let player of players){
             board.push(
-                <Segment>
+                <Segment key={player.name}>
                     <h4>{player.name}</h4>
                     <p>Score: {player.score}</p>
                 </Segment>
@@ -19,7 +19,7 @@ class Scoreboard extends Component {
             <div className="scoreboard">
                 <Segment.Group color='green'>
                     <Segment>
-                        <h2>SPOTIF.IO</h2>
+                        <h2>Spotif.io</h2>
                     </Segment>
                     <Segment>
                         <p>Room Code: <a href="/">HXJWT <Icon name='copy outline' /></a></p>

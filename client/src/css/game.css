@@ -58,3 +58,7 @@ html, body{
     width: 500px;
     text-align: center;
 }
+
+.playlist-picker{
+    padding: 32px;
+}
