@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Button } from 'semantic-ui-react';
 import Spotify from 'spotify-web-api-js';
 
 var spotifyWebAPI = new Spotify();
@@ -10,13 +10,16 @@ class SetSongs extends Component {
         super();
         const params = this.getHashParams();
         this.state = {
-            playlists:[]
+            playlists:[],
+            chosenPlaylist:{}
         }
 
 
         if(params.access_token){
             spotifyWebAPI.setAccessToken(params.access_token);
         }
+
+        this.selectList = this.selectList.bind(this);
     }
 
     getHashParams() {
@@ -40,6 +43,16 @@ class SetSongs extends Component {
             }
         );
     }
+
+    selectList = (e, listId, listName) => {
+        this.setState({
+            ...this.state,
+            chosenPlaylist:{
+                listId: listId,
+                listName: listName
+            }
+        })
+    }
     
     // React Render Function
     render(){
@@ -48,9 +61,16 @@ class SetSongs extends Component {
         console.log(playlists);
         for(let playlist of playlists){
             playlistsDiv.push(
-                <Segment key={playlist.id}>
+                <Segment 
+                    key={playlist.id} 
+                >
                     <h4>{playlist.name}</h4>
                     <p>{playlist.description}</p>
+                    <Button 
+                        onClick={(e) => this.selectList(e, playlist.id, playlist.name)}
+                    >
+                        Select List
+                    </Button>
                 </Segment>
             )
         }

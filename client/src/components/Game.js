@@ -81,22 +81,6 @@ class Game extends Component {
         }
     }
 
-    
-    async componentDidMount(){
-        // Fetch user playlists
-        await spotifyWebAPI.getUserPlaylists().then(
-            (res) => {
-                this.setState({
-                    ...this.state,
-                    playlists: res.items
-                });
-            }
-        );
-        for(let playlist of this.state.playlists){
-            console.log(playlist.name);
-        }
-    }
-    
     // React Render Function
     render(){
         this.getNowPlaying();
