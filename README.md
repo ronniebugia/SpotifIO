@@ -10,7 +10,7 @@ In the auth-server folder run
 
 # To Run the App Proper
 1) Go on to Spotify and play a song.
-2) On termainal go to `auth-server/authorization-server` and run `node app.js`. If you get issues with expressions not being found run the following commaand in the same directory as the source js file 'npm install express body-parser cookie-parser multer --save'
+2) On termainal go to `auth-server/authorization-server` and run `node app.js`. If you get issues with expressions not being found run the following commaand in the same directory as the source js file `npm install express body-parser cookie-parser multer --save`
 3) On another terminal go to `client` and run `npm run start`
 4) Go to htttp://localhost:3000 and log in with your Spotify account.
 5) You will know it is working when you see your song's album art blurred and artist name. Typing in the song name will play the next song in your spotify's queue
