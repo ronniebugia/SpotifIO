@@ -19,5 +19,5 @@ In the auth-server folder run
 -Play the music within the browser app
 -Select a playlist within the app to choose the pool of songs to guess
 -Integrate with SocketIO to get multiple users on one real time instance of the app
--Lobby system
+-LobbyHost system
 -Scoring system

@@ -1,0 +1,28 @@
+html, body{
+    background-color: lavender !important;
+}
+
+
+
+
+.btn{
+    margin-top: 4px;
+    margin-bottom: 8px;
+
+
+}
+.ScreenLobby{
+background-color: blue}
+
+#containerLogoSmall {
+    max-width: 1400px;
+    background-color: lavender;
+}
+
+#game-options{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
