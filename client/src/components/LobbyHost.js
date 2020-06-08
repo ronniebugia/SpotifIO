@@ -4,6 +4,7 @@ import {Dropdown, Form} from 'semantic-ui-react'
 
 class LobbyHost extends Component {
 
+
     roundOptions = [
         {
             text:'1',
@@ -61,7 +62,7 @@ class LobbyHost extends Component {
                 </div>
                 <div className="row justify-content-center">
                     <div className="col-12 col-x1-5 col-lg-6 col-md-8 text-center px-2">
-                        <div> <h3 id="game-code"> </h3> </div>
+
                         <div id="game-options">
                             <div className="header-container">
                                 <div className="gameSettings">
