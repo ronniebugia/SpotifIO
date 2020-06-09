@@ -3,6 +3,8 @@ import "../css/game.css";
 import Scoreboard from "./Scoreboard";
 import MusicPlayer from "./MusicPlayer";
 
+import New from "./New";
+
 import Spotify from 'spotify-web-api-js';
 
 var spotifyWebAPI = new Spotify();
@@ -48,6 +50,7 @@ class Game extends Component {
 
     // Function to Get Song that is now playing on my Spotify Account
     getNowPlaying(){
+
         spotifyWebAPI.getMyCurrentPlaybackState().then(
             (res) => {
                 if(res.item){
@@ -87,6 +90,7 @@ class Game extends Component {
 
         return(
             <div className="game">
+                
                 <MusicPlayer 
                     currentSong={this.state.currentSong}
                     handleInputChange={this.handleInputChange}
