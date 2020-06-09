@@ -11,7 +11,10 @@ class SetSongs extends Component {
         const params = this.getHashParams();
         this.state = {
             playlists:[],
-            chosenPlaylist:{}
+            chosenPlaylist:{
+                listId:"",
+                listName:""
+            }
         }
 
 
@@ -65,7 +68,6 @@ class SetSongs extends Component {
                     key={playlist.id} 
                 >
                     <h4>{playlist.name}</h4>
-                    <p>{playlist.description}</p>
                     <Button 
                         onClick={(e) => this.selectList(e, playlist.id, playlist.name)}
                     >
@@ -78,6 +80,9 @@ class SetSongs extends Component {
             <div className="playlist-picker">
                 <h4>Spotif.io</h4>
                 <p>Choose a Playlist</p>
+                <h4>Chosen:</h4>
+                <h4>{this.state.chosenPlaylist.listName}</h4>
+                <p>{this.state.chosenPlaylist.listId}</p>
                 {playlistsDiv}
             </div>
         )
