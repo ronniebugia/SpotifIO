@@ -24,7 +24,7 @@ class App extends Component {
                 <Route path="/" exact component={Chat}></Route>
                 <Route path="/" exact component={Input}></Route>
                 <Route path="/" exact component={Message}></Route>
-                <Route path="/" exact component={Message}></Route>
+                <Route path="/" exact component={Messages}></Route>
                 <Route path="/choose-playlist" exact component={SetSongs}></Route>
             </BrowserRouter>
         )
