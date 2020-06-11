@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form } from 'semantic-ui-react'
-
+import "../css/Player.css";
 class MusicPlayer extends Component {
 
     render(){
@@ -24,6 +24,9 @@ class MusicPlayer extends Component {
         }
         artistsString = artistsString.substr(0, artistsString.length - 2);
 
+        const progressBarStyle = {
+            width: (this.props.progress_ms * 100 / this.props.item.duration_ms) + '%'
+          };
         return(
             <div className="musicplayer">
                 <div className="track-div">
@@ -31,6 +34,14 @@ class MusicPlayer extends Component {
                         src={currentSong.photoURL}
                         alt="album-art"
                     />
+                    <div className = "now-playing__status">
+                        {this.props.is_playing? "Playing": "Paused"}
+                    </div>
+                    <div className="progress">
+                    <div  className="progress__bar"
+                            style={progressBarStyle}
+                    />
+                    </div>
                     <h4 className="song-title">{songTitle}</h4>
                     <p>{artistsString}</p>
                 </div>
