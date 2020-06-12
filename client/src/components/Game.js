@@ -28,6 +28,10 @@ class Game extends Component {
                 artists: [],
                 photoURL:"https://images.genius.com/cf6062f7a401be02a5aec991a6bb0039.620x615x1.jpg"
             },
+            item: {
+                duration_ms: 221000
+            },
+            progresss_ms: 0,
             playlists:[]
         }
 
@@ -70,6 +74,22 @@ class Game extends Component {
                     });
                 }
             }
+        ).then(
+            spotifyWebAPI.getMyCurrentPlayingTrack().then(
+                (res) => {
+                    if (res.item){
+                        var duration = res.duration_ms;
+                        var progress = res.progress_ms;
+                        this.setState(
+                            {
+                                ...this.state,
+                                progress_ms: progress,
+                                duration_ms:duration,
+                            }
+                        )
+                    }
+                }
+            )
         )
     }
 
@@ -93,6 +113,8 @@ class Game extends Component {
                 
                 <MusicPlayer 
                     currentSong={this.state.currentSong}
+                    item = {this.state.item}
+                    progress_ms = {this.progress_ms}
                     handleInputChange={this.handleInputChange}
                 />
                 <Scoreboard 
