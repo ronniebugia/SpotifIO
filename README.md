@@ -5,12 +5,12 @@ Play with a group of friends to guess the song that is currently playing. Brag t
 In the client folder run
 `npm install spotify-web-api-js semantic-ui-react react-bootstrap bootstrap`
 
-In the auth-server folder run
+In the server folder run
 `npm install`
 
 # To Run the App Proper
 1) Go on to Spotify and play a song.
-2) On termainal go to `auth-server/authorization-code` and run `node app.js`
+2) On termainal go to `server/authorization-code` and run `node app.js`
 3) On another terminal go to `client` and run `npm run start`
 4) Go to htttp://localhost:3000 and log in with your Spotify account.
 5) You will know it is working when you see your song's album art blurred and artist name. Typing in the song name will play the next song in your spotify's queue
