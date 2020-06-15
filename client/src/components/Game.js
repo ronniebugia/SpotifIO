@@ -3,8 +3,6 @@ import "../css/game.css";
 import Scoreboard from "./Scoreboard";
 import MusicPlayer from "./MusicPlayer";
 
-import New from "./New";
-
 import Spotify from 'spotify-web-api-js';
 
 var spotifyWebAPI = new Spotify();
@@ -24,14 +22,13 @@ class Game extends Component {
             songPool: [],
             loggedIn: params.access_token ? true: false,
             currentSong:{
-                title: "Day 'N' Nite",
+                title: "",
                 artists: [],
-                photoURL:"https://images.genius.com/cf6062f7a401be02a5aec991a6bb0039.620x615x1.jpg"
-            },
-            playlists:[]
+                photoURL:""
+            }
         }
 
-        this.handleInputChange = this.handleInputChange.bind(this);
+        this.onKeyPressEnter = this.onKeyPressEnter.bind(this);
 
         if(params.access_token){
             spotifyWebAPI.setAccessToken(params.access_token);
@@ -73,27 +70,66 @@ class Game extends Component {
         )
     }
 
+    // Pre Checks before Render Function
+    componentDidMount(){
+        const params = this.getHashParams();
+        // Read URL to see if playlist has been chosen
+        if(params.playlist_id){
+            spotifyWebAPI.getPlaylistTracks(params.playlist_id).then(
+                res => {
+                    // Choose Random Song from playlist tracks
+                    var playlistTracks = res.items;
+                    var randomIndex = Math.floor(Math.random() * playlistTracks.length);
+                    var randomSong = playlistTracks[randomIndex].track;
+                    var title = randomSong.name;
+                    var photoURL = randomSong.album.images[0].url;
+                    var artists = []
+                    for(let artist of randomSong.artists){
+                        artists.push(artist.name);
+                    }
+
+                    this.setState({
+                        songPool: playlistTracks,
+                        currentSong:{
+                            title:title,
+                            photoURL:photoURL,
+                            artists: artists,
+                            index: randomIndex
+                        }
+                    })
+                }
+            ).catch(
+                err => {
+                    console.log(err);
+                }
+            );
+        }
+    }
+
     // Handles User Input Change
-    handleInputChange(e){
-        let userInput = e.target.value.toLowerCase();
-        let answer = this.state.currentSong.title.toLocaleLowerCase();
-        if(userInput === answer){
-            e.target.style.border = "1px solid green";
-            e.target.value = "";
-            spotifyWebAPI.skipToNext();
+    onKeyPressEnter(e){
+        if(e.key === 'Enter'){
+            let userInput = e.target.value.toLowerCase();
+            let answer = this.state.currentSong.title.toLocaleLowerCase();
+            if(userInput === answer){
+                e.target.style.border = "1px solid green";
+                e.target.value = "";
+                alert("Correct");
+                // spotifyWebAPI.skipToNext();
+            }
         }
     }
 
     // React Render Function
     render(){
-        this.getNowPlaying();
+        // this.getNowPlaying();
 
         return(
             <div className="game">
                 
                 <MusicPlayer 
                     currentSong={this.state.currentSong}
-                    handleInputChange={this.handleInputChange}
+                    onKeyPressEnter={this.onKeyPressEnter}
                 />
                 <Scoreboard 
                     players={this.state.players} 
