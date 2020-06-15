@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import "../css/game.css";
 import Scoreboard from "./Scoreboard";
 import MusicPlayer from "./MusicPlayer";
+import Chat from "./Chat";
 
 import New from "./New";
 
@@ -94,6 +95,9 @@ class Game extends Component {
                 <MusicPlayer 
                     currentSong={this.state.currentSong}
                     handleInputChange={this.handleInputChange}
+                />
+                <Chat
+                    location="HXJWT"
                 />
                 <Scoreboard 
                     players={this.state.players} 

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from "react-router-dom";
 
 import Game from "./components/Game";
-import Join from "./js/Join";
-import Chat from "./js/Chat";
 import SetSongs from "./components/SetSongs";
 
 import New from "./components/New";
@@ -22,8 +20,8 @@ class App extends Component {
                 <a href="http://localhost:8888">Log In</a>
                 
                 <Route path="/" exact component={Game}></Route>
-                <Route path="/join" exact component={Join}></Route>
-                <Route path="/chat" component={Chat}></Route>
+                {/* <Route path="/join" exact component={Join}></Route> */}
+                {/* <Route path="/chat" component={Chat}></Route> */}
                 <Route path="/choose-playlist" exact component={SetSongs}></Route>
                 
                 
