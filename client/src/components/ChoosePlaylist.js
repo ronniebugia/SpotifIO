@@ -4,7 +4,7 @@ import Spotify from 'spotify-web-api-js';
 
 var spotifyWebAPI = new Spotify();
 
-class SetSongs extends Component {
+class ChoosePlaylist extends Component {
     // Constructor for Entire Game
     constructor(){
         super();
@@ -47,13 +47,24 @@ class SetSongs extends Component {
         );
     }
 
-    selectList = (e, listId, listName) => {
+    selectList = (e, playlist) => {
+        const params = this.getHashParams();
+
+        window.location = "/#playlist_id=" + playlist.id + "&&access_token=" + params.access_token;
+
+        spotifyWebAPI.getPlaylistTracks(playlist.id).then(
+            res => {
+                console.log(res);
+            }
+        ).catch(
+            err => {
+                console.log(err);
+            }
+        );
+
         this.setState({
             ...this.state,
-            chosenPlaylist:{
-                listId: listId,
-                listName: listName
-            }
+            chosenPlaylist:playlist
         })
     }
     
@@ -69,7 +80,7 @@ class SetSongs extends Component {
                 >
                     <h4>{playlist.name}</h4>
                     <Button 
-                        onClick={(e) => this.selectList(e, playlist.id, playlist.name)}
+                        onClick={(e) => this.selectList(e, playlist)}
                     >
                         Select List
                     </Button>
@@ -81,12 +92,12 @@ class SetSongs extends Component {
                 <h4>Spotif.io</h4>
                 <p>Choose a Playlist</p>
                 <h4>Chosen:</h4>
-                <h4>{this.state.chosenPlaylist.listName}</h4>
-                <p>{this.state.chosenPlaylist.listId}</p>
+                <h4>{this.state.chosenPlaylist.name}</h4>
+                <p>{this.state.chosenPlaylist.id}</p>
                 {playlistsDiv}
             </div>
         )
     }
 }
 
-export default SetSongs;
+export default ChoosePlaylist;

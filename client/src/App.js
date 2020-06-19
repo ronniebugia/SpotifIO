@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from "react-router-dom";
 
 import Game from "./components/Game";
-import SetSongs from "./components/SetSongs";
-
-import New from "./components/New";
+import ChoosePlaylist from "./components/ChoosePlaylist";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import LobbyHost from "./components/LobbyHost";
+
 
 
 class App extends Component {
@@ -20,15 +20,11 @@ class App extends Component {
                 <a href="http://localhost:8888">Log In</a>
                 
                 <Route path="/" exact component={Game}></Route>
-                {/* <Route path="/join" exact component={Join}></Route> */}
-                {/* <Route path="/chat" component={Chat}></Route> */}
-                <Route path="/choose-playlist" exact component={SetSongs}></Route>
-                
-                
-                <Route path="/new" exact component={New}></Route>
-                
+                <Route path="/choose-playlist" exact component={ChoosePlaylist}></Route>
+                <Route path ="/lobby-host" component = {LobbyHost} />
+
             </BrowserRouter>
-        )
+        );
     }
 }
 
