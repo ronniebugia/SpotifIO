@@ -128,7 +128,7 @@ class Game extends Component {
         // this.getNowPlaying();
 
         return(
-            <div className="game">
+            <div className="game outerContainer">
                 <MusicPlayer 
                     currentSong={this.state.currentSong}
                     onKeyPressEnter={this.onKeyPressEnter}

@@ -18,7 +18,7 @@ class App extends Component {
             <BrowserRouter>
                 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
                 <script src="https://sdk.scdn.co/spotify-player.js"></script>
-                <a href="http://localhost:8888">Log In</a>
+                {/* <a href="http://localhost:8888">Log In</a> */}
                 
                 <Route path="/" exact component={Game}></Route>
                 <Route path="/join" exact component={Join}></Route>
