@@ -3,6 +3,7 @@ import { Form } from 'semantic-ui-react'
 
 class MusicPlayer extends Component {
 
+
     render(){
         var { currentSong, onKeyPressEnter } = this.props;
 
