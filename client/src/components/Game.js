@@ -28,6 +28,10 @@ class Game extends Component {
                 title: "",
                 artists: [],
                 photoURL:""
+            },
+            play: {
+                playerInstance: null,
+                spot_uri: "",
             }
         }
 
@@ -50,7 +54,6 @@ class Game extends Component {
 
     // Function to Get Song that is now playing on my Spotify Account
     getNowPlaying(){
-
         spotifyWebAPI.getMyCurrentPlaybackState().then(
             (res) => {
                 if(res.item){
@@ -60,17 +63,39 @@ class Game extends Component {
                     for(let artist of res.item.artists){
                         artists.push(artist.name);
                     }
+                    newURI = res.item.uri;
+                    newPlayer = new Spotify.Player({
+                        name: 'Game Music Player',
+                        getOAuthToken: callback => {
+                          callback(params.access_token);
+                        }
+                      });
                     this.setState({
                         ...this.state,
                         currentSong:{
                             title:title,
                             photoURL:photoURL,
                             artists: artists
+                        },
+                        play: {
+                            playerInstance: newPlayer,
+                            spot_uri: newURI,
                         }
-                    });
+                    }).then(res2 =>{
+                        this.state.play.playerInstance.connect().then(res3 =>
+                                {
+                                    if(res3){
+                                        // successfully connected
+                                    } else {
+                                        throw new Error("unable to connect Web Playback SDK to spotify");
+                                    }
+                                }
+                            )
+                        }
+                    );
                 }
             }
-        )
+        );
     }
 
     // Pre Checks before Render Function
@@ -90,7 +115,13 @@ class Game extends Component {
                     for(let artist of randomSong.artists){
                         artists.push(artist.name);
                     }
-
+                    newURI = res.item.uri;
+                    newPlayer = new Spotify.Player({
+                        name: 'Game Music Player',
+                        getOAuthToken: callback => {
+                          callback(params.access_token);
+                        }
+                      });
                     this.setState({
                         songPool: playlistTracks,
                         currentSong:{
@@ -98,8 +129,23 @@ class Game extends Component {
                             photoURL:photoURL,
                             artists: artists,
                             index: randomIndex
+                        },
+                        play: {
+                            playerInstance: newPlayer,
+                            spot_uri: newURI,
                         }
-                    })
+                    }).then(res2 =>{
+                        this.state.play.playerInstance.connect().then(res3 =>
+                                {
+                                    if(res3){
+                                        // successfully connected
+                                    } else {
+                                        throw new Error("unable to connect Web Playback SDK to spotify");
+                                    }
+                                }
+                            )
+                        }
+                    );
                 }
             ).catch(
                 err => {
