@@ -63,3 +63,13 @@ html, body{
 .playlist-picker{
     padding: 32px;
 }
+
+.chat-log {
+    background-color: white;
+    max-height: 75%;
+    overflow-y: scroll;
+}
+
+.chat-log-correct {
+    color: green;
+}

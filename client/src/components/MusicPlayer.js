@@ -4,7 +4,7 @@ import { Form } from 'semantic-ui-react'
 class MusicPlayer extends Component {
 
     render(){
-        var { currentSong, onKeyPressEnter } = this.props;
+        var { currentSong, onKeyPressEnter, chatLog } = this.props;
 
         // String that hides the song title
         var songTitle = "";
@@ -36,16 +36,8 @@ class MusicPlayer extends Component {
                 </div>
 
                 <div className="player-input">
-                    <div>
-
-                        <br></br>
-                        CHAT BOX
-                        
-                        <br></br>
-                        
-                        GOES HERE
-
-                        <br></br>
+                    <div className="chat-log">
+                        {chatLog}
                     </div>
                     <Form>
                         <Form.Field>

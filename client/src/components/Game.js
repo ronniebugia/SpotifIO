@@ -13,6 +13,7 @@ class Game extends Component {
         super();
         const params = this.getHashParams();
         this.state = {
+            currentPlayer:'Ronnie',
             players: [
                 {name:'Ronnie', score:0},
                 {name:'Anand', score:0},
@@ -25,7 +26,8 @@ class Game extends Component {
                 title: "",
                 artists: [],
                 photoURL:""
-            }
+            },
+            chatLog:[]
         }
 
         this.onKeyPressEnter = this.onKeyPressEnter.bind(this);
@@ -108,21 +110,42 @@ class Game extends Component {
 
     // Handles User Input Change
     onKeyPressEnter(e){
+
+        var { currentPlayer } = this.state;
+
+        let newChatItem = (
+            <p>{currentPlayer}: {e.target.value}</p>
+        )
+
         if(e.key === 'Enter'){
             let userInput = e.target.value.toLowerCase();
             let answer = this.state.currentSong.title.toLocaleLowerCase();
+            // User for the answer right
             if(userInput === answer){
                 e.target.style.border = "1px solid green";
                 e.target.value = "";
-                alert("Correct");
-                // spotifyWebAPI.skipToNext();
+                newChatItem = (
+                    <p className="chat-log-correct">{currentPlayer} got the song</p>
+                );
+                spotifyWebAPI.skipToNext().then(
+                    (newSong) => {
+                        console.log(newSong);
+                    }
+                );
             }
+
+            let {chatLog} = this.state;
+            chatLog.push(newChatItem);
+            this.setState({
+                ...this.state,
+                chatLog
+            })
         }
     }
 
     // React Render Function
     render(){
-        // this.getNowPlaying();
+        this.getNowPlaying();
 
         return(
             <div className="game">
@@ -130,6 +153,7 @@ class Game extends Component {
                 <MusicPlayer 
                     currentSong={this.state.currentSong}
                     onKeyPressEnter={this.onKeyPressEnter}
+                    chatLog={this.state.chatLog}
                 />
                 <Scoreboard 
                     players={this.state.players} 

@@ -49,9 +49,7 @@ class ChoosePlaylist extends Component {
 
     selectList = (e, playlist) => {
         const params = this.getHashParams();
-
         window.location = "/#playlist_id=" + playlist.id + "&&access_token=" + params.access_token;
-
         spotifyWebAPI.getPlaylistTracks(playlist.id).then(
             res => {
                 console.log(res);
@@ -61,7 +59,6 @@ class ChoosePlaylist extends Component {
                 console.log(err);
             }
         );
-
         this.setState({
             ...this.state,
             chosenPlaylist:playlist
