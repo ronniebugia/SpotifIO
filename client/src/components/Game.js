@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import "../css/game.css";
 import Scoreboard from "./Scoreboard";
 import MusicPlayer from "./MusicPlayer";
+import InfoBar from './InfoBar';
+import Messages from './Messages';
+import Input from './Input';
 
 import Spotify from 'spotify-web-api-js';
 
@@ -148,13 +151,20 @@ class Game extends Component {
         this.getNowPlaying();
 
         return(
-            <div className="game">
-                
+            <div className="game outerContainer">
                 <MusicPlayer 
                     currentSong={this.state.currentSong}
                     onKeyPressEnter={this.onKeyPressEnter}
                     chatLog={this.state.chatLog}
                 />
+                {/* <div className="outerContainer">
+                    <div className="container">
+                        <InfoBar room={room} />
+                        <Messages messages={messages} name={name} />
+                        <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                    </div>
+                    <TextContainer users={users}/>
+                </div> */}
                 <Scoreboard 
                     players={this.state.players} 
                 />
