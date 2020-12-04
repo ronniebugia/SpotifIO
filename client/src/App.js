@@ -10,9 +10,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import LobbyHost from "./components/LobbyHost";
 
 
+
 class App extends Component {
-    
-    
+
     render(){
         return(
             <BrowserRouter>

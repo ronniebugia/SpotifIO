@@ -6,6 +6,8 @@ class Scoreboard extends Component {
     render(){
         var { players } = this.props;
 
+        console.log(players);
+
         var board = [];
         for(let player of players){
             board.push(

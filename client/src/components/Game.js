@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import "../css/game.css";
 import Scoreboard from "./Scoreboard";
 import MusicPlayer from "./MusicPlayer";
+import NewUser from "./NewUser";
 import InfoBar from './InfoBar';
 import Messages from './Messages';
 import Input from './Input';
 
 import Spotify from 'spotify-web-api-js';
+import socketIOClient from "socket.io-client";
 
+const ENDPOINT = "http://127.0.0.1:8888";
+const socket  = socketIOClient(ENDPOINT);
 var spotifyWebAPI = new Spotify();
+
 
 class Game extends Component {
     // Constructor for Entire Game
@@ -16,13 +21,9 @@ class Game extends Component {
         super();
         const params = this.getHashParams();
         this.state = {
-            currentPlayer:'Ronnie',
-            players: [
-                {name:'Ronnie', score:0},
-                {name:'Anand', score:0},
-                {name:'Kaeli', score:0},
-                {name:'Edward', score:0},
-            ],
+            currentPlayer:null,
+            listPlayers:[],
+            players: [],
             songPool: [],
             loggedIn: params.access_token ? true: false,
             currentSong:{
@@ -30,10 +31,11 @@ class Game extends Component {
                 artists: [],
                 photoURL:""
             },
-            chatLog:[]
+            messagesHtml:[]
         }
 
-        this.onKeyPressEnter = this.onKeyPressEnter.bind(this);
+        this.userSendingMessage = this.userSendingMessage.bind(this);
+        this.newUserPressedEnter = this.newUserPressedEnter.bind(this);
 
         if(params.access_token){
             spotifyWebAPI.setAccessToken(params.access_token);
@@ -75,6 +77,28 @@ class Game extends Component {
         )
     }
 
+    // Socket IO Functions
+    socketIOfunctions() {
+
+        socket.on('chat-message', messages => {
+            let messagesHtml = [];
+            for (let i of messages) {
+                messagesHtml.push(<p>{i}</p>);
+            }
+            this.setState({
+                ...this.state,
+                messagesHtml
+            });
+        });
+
+        socket.on('new-user-joined', users => {
+            this.setState({
+                ...this.state,
+                players: users
+            });
+        })
+    }
+
     // Pre Checks before Render Function
     componentDidMount(){
         const params = this.getHashParams();
@@ -109,65 +133,79 @@ class Game extends Component {
                 }
             );
         }
+
+        this.socketIOfunctions();
     }
 
     // Handles User Input Change
-    onKeyPressEnter(e){
-
+    userSendingMessage(e){
         var { currentPlayer } = this.state;
-
-        let newChatItem = (
-            <p>{currentPlayer}: {e.target.value}</p>
-        )
-
         if(e.key === 'Enter'){
+            let messageString = currentPlayer + ": " + e.target.value;
             let userInput = e.target.value.toLowerCase();
             let answer = this.state.currentSong.title.toLocaleLowerCase();
             // User for the answer right
             if(userInput === answer){
                 e.target.style.border = "1px solid green";
                 e.target.value = "";
-                newChatItem = (
-                    <p className="chat-log-correct">{currentPlayer} got the song</p>
-                );
+                messageString = currentPlayer + " got the song";
                 spotifyWebAPI.skipToNext().then(
                     (newSong) => {
                         console.log(newSong);
                     }
                 );
             }
+            socket.emit('send-chat-message', messageString);
+        }
+    }
 
-            let {chatLog} = this.state;
-            chatLog.push(newChatItem);
+
+
+
+    // Handles New User Input 
+    newUserPressedEnter(e){
+        if(e.key === 'Enter'){
+            let userName = e.target.value;
+            socket.emit('new-user', userName);
             this.setState({
                 ...this.state,
-                chatLog
-            })
+                currentPlayer: userName
+            });
         }
     }
 
     // React Render Function
     render(){
         this.getNowPlaying();
+        this.socketIOfunctions();
 
         return(
-            <div className="game outerContainer">
-                <MusicPlayer 
-                    currentSong={this.state.currentSong}
-                    onKeyPressEnter={this.onKeyPressEnter}
-                    chatLog={this.state.chatLog}
+            <div className="game">
+
+                {this.state.currentPlayer ? 
+                <div>
+                    <MusicPlayer 
+                        currentSong={this.state.currentSong}
+                        userSendingMessage={this.userSendingMessage}
+                        messagesHtml={this.state.messagesHtml}
+                    />
+                    {/* <div className="outerContainer">
+                        <div className="container">
+                            <InfoBar room={room} />
+                            <Messages messages={messages} name={name} />
+                            <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+                        </div>
+                        <TextContainer users={users}/>
+                    </div> */}
+                    <Scoreboard 
+                        players={this.state.players} 
+                    />
+                </div>
+                :
+                <NewUser
+                    newUserPressedEnter={this.newUserPressedEnter}
                 />
-                {/* <div className="outerContainer">
-                    <div className="container">
-                        <InfoBar room={room} />
-                        <Messages messages={messages} name={name} />
-                        <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
-                    </div>
-                    <TextContainer users={users}/>
-                </div> */}
-                <Scoreboard 
-                    players={this.state.players} 
-                />
+                }
             </div>
         )
     }
